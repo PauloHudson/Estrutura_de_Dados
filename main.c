@@ -355,35 +355,34 @@ int main() {
         switch (opcao) {
             case 1:
                 cadastrarPaciente(&lista);
-            break;
+                break;
             case 2:
                 consultarPaciente(&lista);
-            break;
+                break;
             case 3:
                 mostrarListaCompleta(&lista);
-            break;
+                break;
             case 4:
                 atualizarPaciente(&lista);
-            break;
+                break;
             case 5:
                 removerPaciente(&lista);
-            break;
+                break;
             case 6:
                 salvarEmArquivo(&lista);
-            break;
+                break;
             case 7:
                 lerDoArquivo(&lista);
-            break;
+                break;
             case 8:
                 menuAtendimento(&fila, &lista);
                 break;
             case 9:
                 Sobre();
                 break;
-            break;
             case 0:
                 printf("Saindo...\n");
-            break;
+                break;
             default:
                 printf("Opção inválida. Try again.\n");
         }

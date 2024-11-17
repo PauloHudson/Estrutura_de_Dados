@@ -28,15 +28,135 @@ typedef struct Lista {
     Elista *inicio;
     int qtde;
 } Lista;
+
+typedef struct Efila {
+    Registro dados;
+    struct Efila *proximo;
+} Efila;
+
+typedef struct Fila {
+    Efila *head;
+    Efila *tail;
+    int qtde;
+} Fila;
+
+
 //-----------------------------------------
-
-//Funções----------------------------------
-
 void inicializarLista(Lista *lista) {
     lista->inicio = NULL;
     lista->qtde = 0;
 }
 
+
+void inicializarFila(Fila *fila) {
+    fila->head = NULL;
+    fila->tail = NULL;
+    fila->qtde = 0;
+}
+//-------Funções da fila atendimento-------------
+
+
+
+void enfileirarPaciente(Fila *fila, Lista *lista) {
+    char nome[50];
+    printf("Digite o nome do paciente para enfileirar: ");
+    scanf(" %[^\n]s", nome);
+
+    Elista *paciente = lista->inicio;
+    while (paciente) {
+        if (strcmp(paciente->dados.nome, nome) == 0) {
+            Efila *novo = (Efila *)malloc(sizeof(Efila));
+            if (!novo) {
+                printf("Erro ao alocar memória.\n");
+                return;
+            }
+            novo->dados = paciente->dados;
+            novo->proximo = NULL;
+
+            if (fila->head == NULL) {
+                fila->head = novo;
+                fila->tail = novo;
+            } else {
+                fila->tail->proximo = novo;
+                fila->tail = novo;
+            }
+            fila->qtde++;
+            printf("Paciente '%s' enfileirado com sucesso!\n", nome);
+            return;
+        }
+        paciente = paciente->proximo;
+    }
+    printf("Paciente não encontrado no cadastro.\n");
+}
+
+void desenfileirarPaciente(Fila *fila) {
+    if (fila->head == NULL) {
+        printf("A fila esta vazia.\n");
+        return;
+    }
+
+    Efila *remover = fila->head;
+    fila->head = fila->head->proximo;
+    if (fila->head == NULL) {
+        fila->tail = NULL;
+    }
+    printf("Paciente '%s' desenfileirado.\n", remover->dados.nome);
+    free(remover);
+    fila->qtde--;
+}
+
+void mostrarFila(Fila *fila) {
+    if (fila->head == NULL) {
+        printf("A fila esta vazia.\n");
+        return;
+    }
+
+    Efila *aux = fila->head;
+    printf("Fila de Atendimento:\n");
+    while (aux) {
+        printf("Nome: %s | Idade: %d | RG: %s | Data de Entrada: %02d/%02d/%04d\n",
+               aux->dados.nome, aux->dados.idade, aux->dados.rg,
+               aux->dados.entrada.dia, aux->dados.entrada.mes, aux->dados.entrada.ano);
+        aux = aux->proximo;
+    }
+}
+
+void menuAtendimento(Fila *fila, Lista *lista) {
+    int opcao;
+    do {
+        printf("\n--- Menu de Atendimento ---\n");
+        printf("1. Enfileirar paciente\n");
+        printf("2. Desenfileirar paciente\n");
+        printf("3. Mostrar fila\n");
+        printf("0. Voltar ao menu principal\n");
+        printf("Escolha uma option: ");
+        scanf("%d", &opcao);
+
+        switch (opcao) {
+            case 1:
+                enfileirarPaciente(fila, lista);
+            break;
+            case 2:
+                desenfileirarPaciente(fila);
+            break;
+            case 3:
+                mostrarFila(fila);
+            break;
+            case 0:
+                printf("voltar a menu principal...\n");
+            break;
+            default:
+                printf("Option invalida, try again.\n");
+        }
+    } while (opcao != 0);
+}
+
+
+
+
+
+
+//-------
 void cadastrarPaciente(Lista *lista) {
     Elista *novo = (Elista *)malloc(sizeof(Elista));
     if (!novo) {
@@ -94,7 +214,7 @@ void removerPaciente(Lista *lista) {
         anterior = aux;
         aux = aux->proximo;
     }
-    printf("paciente não encontrado.\n");
+    printf("paciente nao encontrado.\n");
 }
 
 void atualizarPaciente(Lista *lista) {
@@ -120,7 +240,7 @@ void atualizarPaciente(Lista *lista) {
         }
         aux = aux->proximo;
     }
-    printf("Paciente não encontrado.\n");
+    printf("Paciente nao encontrado.\n");
 }
 
 
@@ -201,7 +321,9 @@ void lerDoArquivo(Lista *lista) {
 
 int main() {
     Lista lista;
+    Fila fila;
     inicializarLista(&lista);
+    inicializarFila(&fila);
     int opcao;
 
     do {
@@ -213,6 +335,7 @@ int main() {
         printf("5. Remover paciente\n");
         printf("6. Salvar dados em arquivo\n");
         printf("7. Carregar dados de arquivo\n");
+        printf("8. Atendimento\n");
         printf("0. Sair\n");
         printf("Escolha uma option: ");
         scanf("%d", &opcao);
@@ -239,11 +362,15 @@ int main() {
             case 7:
                 lerDoArquivo(&lista);
             break;
+            case 8:
+                menuAtendimento(&fila, &lista);
+                break;
+            break;
             case 0:
                 printf("Saindo...\n");
             break;
             default:
-                printf("Opção inválida. Tente novamente.\n");
+                printf("Opção inválida. Try again.\n");
         }
     } while (opcao != 0);
 

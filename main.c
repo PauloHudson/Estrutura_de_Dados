@@ -151,6 +151,17 @@ void menuAtendimento(Fila *fila, Lista *lista) {
     } while (opcao != 0);
 }
 
+void Sobre() {
+    printf("\n============================\n");
+    printf("         Sobre Nos         \n");
+    printf("============================\n");
+    printf("1. Desenvolvedores: Paulo e Danillo\n");
+    printf("2. Curso: Ciencia da Computacao - 4 Ciclo\n");
+    printf("3. Disciplina: Estrutura de Dados\n");
+    printf("4. Data: 18/11/2024\n");
+    printf("============================\n");
+}
+
 
 
 
@@ -336,6 +347,7 @@ int main() {
         printf("6. Salvar dados em arquivo\n");
         printf("7. Carregar dados de arquivo\n");
         printf("8. Atendimento\n");
+        printf("9. Sobre\n");
         printf("0. Sair\n");
         printf("Escolha uma option: ");
         scanf("%d", &opcao);
@@ -364,6 +376,9 @@ int main() {
             break;
             case 8:
                 menuAtendimento(&fila, &lista);
+                break;
+            case 9:
+                Sobre();
                 break;
             break;
             case 0:

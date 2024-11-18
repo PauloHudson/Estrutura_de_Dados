@@ -16,7 +16,7 @@ Sistema desenvolvido para gerenciar pacientes e seu atendimento em uma clínica 
 
 ### 1. Cadastro de Pacientes
 - Cadastrar novos pacientes com nome, idade, RG e data de entrada.
-- 
+  
 ### 2. Gerenciamento de Pacientes
 - Consultar, atualizar e remover pacientes cadastrados.
 

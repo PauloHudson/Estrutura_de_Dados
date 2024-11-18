@@ -6,12 +6,13 @@
 // Danillo 22.222.008-9
 
 // Estruturas
+//tipo de data
 typedef struct Data {
   int dia;
   int mes;
   int ano;
 } Data;
-
+//estrutura do registro
 typedef struct Registro {
   char nome[50];
   int idade;
@@ -19,41 +20,49 @@ typedef struct Registro {
   Data entrada;
 } Registro;
 
+// nó para lista encadeada de pacientes.
 typedef struct Elista {
   Registro dados;
   struct Elista *proximo;
 } Elista;
 
+
+// Lista principal dos pacientes cadastrados.
 typedef struct Lista {
   Elista *inicio;
   int qtde;
 } Lista;
 
+// Nó para fila de atendimento.
 typedef struct Efila {
   Registro dados;
   struct Efila *proximo;
 } Efila;
 
+// fila usada para gerenciar pacientes aguardando atendimento.
 typedef struct Fila {
   Efila *head;
   Efila *tail;
   int qtde;
 } Fila;
 
+// Nó para pilha de históricos de atendimento..
 typedef struct EStack {
   Registro dados;
   struct EStack *proximo;
 } EStack;
 
+// Pilha usada para controlar o histórico de pacientes atendidos.
 typedef struct Stack {
   EStack *topo;
   int qtde;
 } Stack;
 
+// Nó de uma árvore para ordenação ou filtro.
 typedef struct Vertice {
-  int dadosPesq;
-  Registro dados;
-  struct Vertice *esq;
+  int dadosPesq; //armazenar os dados
+  Registro dados; //dados do paciente
+  struct Vertice *esq; //apontadores para os pais e filhos
   struct Vertice *dir;
   struct Vertice *pai;
 } Vertice;
@@ -85,11 +94,15 @@ void inicializarStack(Stack *stack) {
 }
 
 //-------Funções da fila atendimento-------------
+
+// Enfileira paciente com base no nome encontrado na lista principal.
 void enfileirarPaciente(Fila *fila, Lista *lista) {
   char nome[50];
   printf("Digite o nome do paciente para enfileirar: ");
   scanf(" %[^\n]s", nome);
 
+
+  // Busca na lista de pacientes cadastrados.
   Elista *paciente = lista->inicio;
   while (paciente) {
     if (strcmp(paciente->dados.nome, nome) == 0) {
@@ -100,7 +113,7 @@ void enfileirarPaciente(Fila *fila, Lista *lista) {
       }
       novo->dados = paciente->dados;
       novo->proximo = NULL;
-
+      //caso vázia
       if (fila->head == NULL) {
         fila->head = novo;
         fila->tail = novo;
@@ -116,13 +129,13 @@ void enfileirarPaciente(Fila *fila, Lista *lista) {
   }
   printf("Paciente nao encontrado no cadastro.\n");
 }
-
+//remove o primeiro da fila e adc, a pilha de atendimento
 void desenfileirarPaciente(Fila *fila, Stack *stack) {
   if (fila->head == NULL) {
     printf("Fila vazia.\n");
     return;
   }
-
+  //remove nó da fila e transfere para a pilha
   Efila *remover = fila->head;
   fila->head = fila->head->proximo;
   if (fila->head == NULL) {
@@ -147,6 +160,7 @@ void desenfileirarPaciente(Fila *fila, Stack *stack) {
   fila->qtde--;
 }
 
+// Desfaz o último atendimento, colocando o paciente de volta na fila
 void desfazerAtendimento(Fila *fila, Stack *stack) {
   if (stack->topo == NULL) {
     printf("Nao ha atendimentos.\n");
@@ -176,7 +190,7 @@ void desfazerAtendimento(Fila *fila, Stack *stack) {
   printf("Atendimento do paciente '%s' desfeito e paciente reenfileirado.\n", remover->dados.nome);
   free(remover);
 }
-
+//mostra a fila completa.
 void mostrarFila(Fila *fila) {
   if (fila->head == NULL) {
     printf("A fila Fila Vazia.\n");
@@ -248,7 +262,7 @@ void cadastrarPaciente(Lista *lista) {
     printf("Erro ao alocar memória.\n");
     return;
   }
-
+  // solicita e armazena os dados do paciente
   printf("Nome: ");
   scanf(" %[^\n]s", novo->dados.nome);
   printf("Idade: ");
@@ -271,6 +285,7 @@ void mostrarListaCompleta(Lista *lista) {
     printf("Fila Vazia.\n");
     return;
   }
+  // percorre e exibe todos os pacientes na lista
   Elista *aux = lista->inicio;
   printf("Lista de Pacientes:\n");
   printf("=============================:\n\n");
@@ -284,6 +299,7 @@ void mostrarListaCompleta(Lista *lista) {
 }
 
 void removerPaciente(Lista *lista) {
+  // solicita o nome do paciente a ser removido
   char nome[50];
   printf("Digite o nome do paciente a remover: ");
   scanf(" %[^\n]s", nome);
@@ -310,10 +326,11 @@ void removerPaciente(Lista *lista) {
 }
 
 void atualizarPaciente(Lista *lista) {
+  // solicita o nome do paciente para atualizar
   char nome[50];
   printf("Digite o nome do paciente para atualizar: ");
   scanf(" %[^\n]s", nome);
-
+  // percorre a lista para encontrar o paciente
   Elista *aux = lista->inicio;
   while (aux) {
     if (strcmp(aux->dados.nome, nome) == 0) {

@@ -30,7 +30,8 @@ Sistema desenvolvido para gerenciar pacientes e seu atendimento em uma clínica 
 ### 5. Persistência
 - Salvamento e carregamento de dados de pacientes em um arquivo de texto.
 
-###Estruturas de Dados Utilizadas
+# Estruturas de Dados Utilizadas
+
 Lista Encadeada: Para armazenar os pacientes cadastrados.
 Fila: Para gerenciar pacientes aguardando atendimento.
 Pilha: Para armazenar o histórico de atendimentos realizados.

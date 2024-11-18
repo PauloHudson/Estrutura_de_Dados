@@ -32,7 +32,7 @@ Sistema desenvolvido para gerenciar pacientes e seu atendimento em uma clínica 
 
 # Estruturas de Dados Utilizadas
 
-Lista Encadeada: Para armazenar os pacientes cadastrados.
-Fila: Para gerenciar pacientes aguardando atendimento.
-Pilha: Para armazenar o histórico de atendimentos realizados.
-Árvore Binária: Para filtrar e ordenar pacientes com base em diferentes critérios.
+- Lista Encadeada: Para armazenar os pacientes cadastrados.
+- Fila: Para gerenciar pacientes aguardando atendimento.
+- Pilha: Para armazenar o histórico de atendimentos realizados.
+- Árvore Binária: Para filtrar e ordenar pacientes com base em diferentes critérios.
